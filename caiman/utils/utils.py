@@ -516,7 +516,7 @@ def recursively_save_dict_contents_to_group(h5file:h5py.File, path:str, dic:dict
             except:
                 item = np.array(item).astype('|S32')
                 h5file[path + key] = item
-            if not np.array_equal(h5file[path + key][()], item):
+            if not np.array_equal(h5file[path + key][()], item, equal_nan=item.dtype.kind == 'f'):  # just using True gives "ufunc 'isnan' not supported for the input types"
                 raise ValueError(f'Error while saving ndarray {key} of dtype {item.dtype}')
         # save dictionaries
         elif isinstance(item, dict):
@@ -682,7 +682,7 @@ def get_caiman_version() -> tuple[str, str]:
 class caitimer(contextlib.ContextDecorator):
     """ This is a simple context manager that you can use like this to get timing information on functions you call:
         with caiman.utils.utils.caitimer("CNMF fit"):
-            cnm = cnm.fit(images)
+            cnm.fit(images)
 
         When the context exits it will say how long it was open. Useful for easy function benchmarking """
 

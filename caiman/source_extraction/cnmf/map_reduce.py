@@ -109,7 +109,7 @@ def cnmf_patches(args_in):
 
         cnm = CNMF(n_processes=1, params=opts)
 
-        cnm = cnm.fit(images)
+        cnm.fit(images)
         return [idx_, shapes, scipy.sparse.coo_matrix(cnm.estimates.A),
                 cnm.estimates.b, cnm.estimates.C, cnm.estimates.f,
                 cnm.estimates.S, cnm.estimates.bl, cnm.estimates.c1,
@@ -454,7 +454,7 @@ def run_CNMF_patches(file_name, shape, params, gnb=1, dview=None,
         YrA_tot *= nA[:, None]
         nB = np.ravel(np.sqrt(B_tot.power(2).sum(0)))
         B_tot /= nB
-        B_tot = np.array(B_tot, dtype=np.float32)
+        B_tot = B_tot.toarray().astype(np.float32)
 #        B_tot = scipy.sparse.coo_matrix(B_tot)
         F_tot *= nB[:, None]
 
